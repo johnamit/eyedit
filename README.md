@@ -1,4 +1,4 @@
-<img src="assets/icons/sit_faf_edit2.png" alt="SiT FAF Edit" width="900"><br>
+<img src="assets/icons/eyedit.png" alt="Eyedit: FAF Generation and Editing" width="900"><br>
 
 [<img src="https://img.shields.io/badge/HuggingFace-Models-black?style=for-the-badge&logo=huggingface&logoColor=FFD21E&labelColor=ff7f1e" alt="View Model on Hugging Face"/>](https://huggingface.co/johnamit/sit-faf-generate-edit)
 &nbsp;&nbsp;&nbsp;
