@@ -66,6 +66,7 @@ evaluation/stylegan_*
 pretrained_models/
 checkpoints/
 weights/
+huggingface/
 
 # ===========================
 # 5. PYTHON & ENVIRONMENT

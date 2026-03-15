@@ -10,6 +10,7 @@ A deep learning project for **Fundus Autofluorescence (FAF) image generation, in
   <a href="#training"><img src="https://img.shields.io/badge/Training-111111?style=for-the-badge" alt="Training"></a>
   <a href="#sampling"><img src="https://img.shields.io/badge/Sampling-111111?style=for-the-badge" alt="Sampling"></a>
   <a href="#inversion-and-editing"><img src="https://img.shields.io/badge/Inversion & Editing-111111?style=for-the-badge" alt="Inversion and Editing"></a>
+  <a href="#streamlit-app"><img src="https://img.shields.io/badge/Streamlit App-111111?style=for-the-badge" alt="Streamlit App"></a>
   <a href="#evaluation"><img src="https://img.shields.io/badge/Evaluation-111111?style=for-the-badge" alt="Evaluation"></a>
   <a href="#project-structure"><img src="https://img.shields.io/badge/Structure-111111?style=for-the-badge" alt="Project Structure"></a>
   <a href="#citation"><img src="https://img.shields.io/badge/Citation-111111?style=for-the-badge" alt="Citation"></a>
@@ -74,10 +75,14 @@ faf_flow_edit/
 │   ├── evaluation/                # Evaluation scripts
 │   │   ├── evaluate_conditioning.py
 │   │   └── run_tstr.py
-│   └── prepare_datasets/          # Data preparation scripts
-│       ├── clean_dataset.py
-│       ├── resize_dataset.py
-│       └── generate_synthetic_dataset.py
+│   ├── prepare_datasets/          # Data preparation scripts
+│   │   ├── clean_dataset.py
+│   │   ├── resize_dataset.py
+│   │   └── generate_synthetic_dataset.py
+│   └── sit_app/                   # Streamlit interactive app
+│       ├── app_editable.py        # Main app (generation + editing)
+│       ├── inference.py           # SiT inference/inversion engine
+│       └── feature_extractor.py   # LLM-based parameter extraction
 ├── SiT/                           # Core SiT model
 │   ├── train.py                   # Training script
 │   ├── sample.py                  # Sampling script
@@ -98,8 +103,8 @@ faf_flow_edit/
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
-cd faf_flow_edit
+git clone https://github.com/johnamit/sit-faf-generate-edit.git
+cd sit-faf-generate-edit
 ```
 
 ### 2. Create the Conda Environment
@@ -572,6 +577,46 @@ python invert.py edit \
 | Reconstructed (ABCA4, R, 32) | USH2A, L, 75 | OPA1, R, 40 |
 |:----------------------------:|:------------:|:-----------:|
 | ![Original](SiT/edits/00000018_pat_00448798_sdb/edited_ABCA4_R_Age32.png) | ![USH2A_L_75](SiT/edits/00000018_pat_00448798_sdb/edited_USH2A_L_Age75.png) | ![OPA1_R_40](SiT/edits/00000018_pat_00448798_sdb/edited_OPA1_R_Age40.png) |
+
+---
+
+## Streamlit App
+
+An interactive Streamlit application that provides a chat-based interface for generating and editing FAF images in real time.
+
+### Features
+
+- **Natural Language Input**: Describe a patient case in plain text (e.g., *"Generate a FAF image for an ABCA4 patient, left eye, age 45"*) and the app extracts gene, laterality, and age automatically using an LLM-based feature extractor.
+- **Interactive Editing**: After generating an image, request edits conversationally (e.g., *"Age it down to 25"* or *"Switch to right eye with gene USH2A"*). The app performs ODE-based inversion and re-generation under the hood.
+- **Chat History**: Full conversation with generated/edited images is preserved in the session.
+
+### Running the App
+
+1. Ensure the SiT conda environment is activated:
+
+```bash
+conda activate SiT_flow
+```
+
+2. Make sure Streamlit is installed (add it to the environment if needed):
+
+```bash
+pip install streamlit
+```
+
+3. Launch the app:
+
+```bash
+streamlit run scripts/sit_app/app_editable.py
+```
+
+The app will open in your browser (default: `http://localhost:8501`).
+
+### Requirements
+
+- A trained SiT model checkpoint at `SiT/weights/results-gene0error-fix/000-SiT-XL-2-Linear-velocity-None/checkpoints/0110000.pt` (or update the `CKPT_PATH` in `app_editable.py` to point to your checkpoint)
+- The gene class mapping file at `data/class_mapping.json`
+- An LLM API key configured for the feature extractor (see `scripts/sit_app/feature_extractor.py` for details)
 
 ---
 
