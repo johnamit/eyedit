@@ -1,10 +1,15 @@
-# SiT FAF Generation, Inversion and Editing
+<img src="assets/icons/sit_faf_edit2.png" alt="SiT FAF Edit" width="900"><br>
 
-A deep learning project for **Fundus Autofluorescence (FAF) image generation, inversion and editing** using Scalable Interpolant Transformers (SiT). This repository enables conditional generation of synthetic FAF images based on genetic mutations, patient age, and eye laterality, with support for real-to-latent inversion and semantic image editing.
+[<img src="https://img.shields.io/badge/HuggingFace-Models-black?style=for-the-badge&logo=huggingface&logoColor=FFD21E&labelColor=ff7f1e" alt="View Model on Hugging Face"/>](https://huggingface.co/johnamit/sit-faf-generate-edit)
+&nbsp;&nbsp;&nbsp;
+[<img src="https://img.shields.io/badge/Read%20Paper%20(old)-PDF-black?style=for-the-badge&labelColor=0057FF&logo=adobeacrobat&logoColor=white" alt="Read Paper"/>](https://drive.google.com/file/d/14sQsQiWsiFZTjVDHBfkP4D6JFlClG4AQ/view?usp=sharing)
+
+A deep learning project for **Fundus Autofluorescence (FAF) image generation, inversion and editing** using [Scalable Interpolant Transformers (SiT)](https://github.com/willisma/SiT). This repository enables conditional generation of synthetic FAF images based on genetic mutations, patient age, and eye laterality, with support for real-to-latent inversion and semantic image editing.
 
 <p>
   <a href="#overview"><img src="https://img.shields.io/badge/Overview-111111?style=for-the-badge" alt="Overview"></a>
   <a href="#prerequisites"><img src="https://img.shields.io/badge/Prerequisites-111111?style=for-the-badge" alt="Prerequisites"></a>
+  <a href="#project-structure"><img src="https://img.shields.io/badge/Structure-111111?style=for-the-badge" alt="Project Structure"></a>
   <a href="#environment-setup"><img src="https://img.shields.io/badge/Setup-111111?style=for-the-badge" alt="Environment Setup"></a>
   <a href="#dataset"><img src="https://img.shields.io/badge/Dataset-111111?style=for-the-badge" alt="Dataset"></a>
   <a href="#training"><img src="https://img.shields.io/badge/Training-111111?style=for-the-badge" alt="Training"></a>
@@ -12,11 +17,10 @@ A deep learning project for **Fundus Autofluorescence (FAF) image generation, in
   <a href="#inversion-and-editing"><img src="https://img.shields.io/badge/Inversion & Editing-111111?style=for-the-badge" alt="Inversion and Editing"></a>
   <a href="#streamlit-app"><img src="https://img.shields.io/badge/Streamlit App-111111?style=for-the-badge" alt="Streamlit App"></a>
   <a href="#evaluation"><img src="https://img.shields.io/badge/Evaluation-111111?style=for-the-badge" alt="Evaluation"></a>
-  <a href="#project-structure"><img src="https://img.shields.io/badge/Structure-111111?style=for-the-badge" alt="Project Structure"></a>
   <a href="#citation"><img src="https://img.shields.io/badge/Citation-111111?style=for-the-badge" alt="Citation"></a>
+  <a href="#license"><img src="https://img.shields.io/badge/License-111111?style=for-the-badge" alt="License"></a>
 </p>
 
----
 
 ## Overview
 
@@ -31,7 +35,7 @@ The model supports:
 2. **Image Inversion**: Map real FAF images back to the latent space
 3. **Semantic Editing**: Modify conditions (gene, age, laterality) to generate edited versions of real images
 
----
+
 
 ## Features
 
@@ -42,18 +46,17 @@ The model supports:
 - Distributed training with PyTorch DDP
 - Weights & Biases integration for experiment tracking
 
----
+
 
 ## Prerequisites
 
-- **Operating System**: Linux (tested on Ubuntu)
-- **GPU**: NVIDIA GPU with CUDA support (recommended: A100, V100, or RTX 3090+)
+- **Operating System**: Linux
+- **GPU**: NVIDIA GPU with CUDA support (2 x RTX A6000s used)
 - **CUDA**: Version 11.x or higher
 - **Conda**: Miniconda or Anaconda for environment management
 - **Python**: 3.10+
-- **Storage**: ~50GB for datasets and checkpoints
 
----
+
 
 ## Project Structure
 
@@ -96,7 +99,7 @@ faf_flow_edit/
 └── stylegan2-ada-pytorch/         # StyleGAN2-ADA baseline
 ```
 
----
+
 
 ## Environment Setup
 
@@ -132,7 +135,7 @@ conda env create -f environments/env_stylegan2ada.yml
 conda activate stylegan2ada
 ```
 
----
+
 
 ## Dataset
 
@@ -197,7 +200,7 @@ python scripts/prepare_datasets/create_metadata_256.py \
     --output_csv data/images_256_cleaned/metadata_cleaned_256.csv
 ```
 
----
+
 
 ## Training
 
@@ -248,7 +251,9 @@ torchrun --nproc_per_node=<NUM_GPUS> train.py \
     ...
 ```
 
----
+The trained SiT-XL/2 model can be found in the [huggingface repo](https://huggingface.co/johnamit/sit-faf-generate-edit) for this project.
+
+
 
 ## Sampling
 
@@ -291,7 +296,7 @@ This script:
 2. Generates synthetic images matching those distributions
 3. Creates a manifest CSV for evaluation
 
----
+
 
 ## Inversion and Editing
 
@@ -411,7 +416,7 @@ Latent reconstruction MSE: 0.000006
 
 The low reconstruction MSE (0.000006) confirms high-quality inversion.
 
----
+
 
 #### Step 2: Single Attribute Editing
 
@@ -437,7 +442,7 @@ python invert.py edit \
 |:----------------------:|:--------------:|:----------------:|
 | ![Age32](SiT/edits/00000018_pat_00448798_sdb/edited_ABCA4_R_Age32.png) | ![Age65](SiT/edits/00000018_pat_00448798_sdb/edited_ABCA4_R_Age65.png) | ![Age20](SiT/edits/00000018_pat_00448798_sdb/edited_ABCA4_R_Age20.png) |
 
----
+
 
 **Laterality Editing** — Flip from Right to Left eye:
 
@@ -454,7 +459,7 @@ python invert.py edit \
 |:-----------------:|:----------:|
 | ![Right](SiT/edits/00000018_pat_00448798_sdb/edited_ABCA4_R_Age32.png) | ![Left](SiT/edits/00000018_pat_00448798_sdb/edited_ABCA4_L_Age32.png) |
 
----
+
 
 **Gene Editing** — Transform between genetic phenotypes:
 
@@ -478,7 +483,7 @@ python invert.py edit \
 |:---------------------:|:--------------:|:-------------:|
 | ![ABCA4](SiT/edits/00000018_pat_00448798_sdb/edited_ABCA4_R_Age32.png) | ![USH2A](SiT/edits/00000018_pat_00448798_sdb/edited_USH2A_R_Age32.png) | ![OPA1](SiT/edits/00000018_pat_00448798_sdb/edited_OPA1_R_Age32.png) |
 
----
+
 
 #### Step 3: Multi-Attribute Editing
 
@@ -506,7 +511,7 @@ python invert.py edit \
 |:-------------------------:|:--------------:|:--------------:|
 | ![Original](SiT/edits/00000018_pat_00448798_sdb/edited_ABCA4_R_Age32.png) | ![USH2A_65](SiT/edits/00000018_pat_00448798_sdb/edited_USH2A_R_Age65.png) | ![USH2A_20](SiT/edits/00000018_pat_00448798_sdb/edited_USH2A_R_Age20.png) |
 
----
+
 
 **Gene + Laterality:**
 
@@ -532,7 +537,7 @@ python invert.py edit \
 |:------------------------:|:---------:|:--------:|
 | ![Original](SiT/edits/00000018_pat_00448798_sdb/edited_ABCA4_R_Age32.png) | ![USH2A_L](SiT/edits/00000018_pat_00448798_sdb/edited_USH2A_L_Age32.png) | ![OPA1_L](SiT/edits/00000018_pat_00448798_sdb/edited_OPA1_L_Age32.png) |
 
----
+
 
 **Age + Laterality:**
 
@@ -550,7 +555,7 @@ python invert.py edit \
 |:---------------------:|:--------------:|
 | ![Original](SiT/edits/00000018_pat_00448798_sdb/edited_ABCA4_R_Age32.png) | ![L_65](SiT/edits/00000018_pat_00448798_sdb/edited_ABCA4_L_Age65.png) |
 
----
+
 
 #### Step 4: Triple Attribute Editing (Gene + Age + Laterality)
 
@@ -578,7 +583,7 @@ python invert.py edit \
 |:----------------------------:|:------------:|:-----------:|
 | ![Original](SiT/edits/00000018_pat_00448798_sdb/edited_ABCA4_R_Age32.png) | ![USH2A_L_75](SiT/edits/00000018_pat_00448798_sdb/edited_USH2A_L_Age75.png) | ![OPA1_R_40](SiT/edits/00000018_pat_00448798_sdb/edited_OPA1_R_Age40.png) |
 
----
+
 
 ## Streamlit App
 
@@ -622,6 +627,8 @@ The app will open in your browser (default: `http://localhost:8501`).
 
 ## Evaluation
 
+All models used for evaluation can be found in the [huggingface repo](https://huggingface.co/johnamit/sit-faf-generate-edit) for this project.
+
 ### Conditioning Evaluation
 
 Evaluate how well synthetic images match their conditioning labels using trained judge classifiers:
@@ -641,7 +648,7 @@ python scripts/evaluation/evaluate_conditioning.py \
 
 **What it evaluates:**
 - **Laterality Accuracy**: Classification accuracy for L/R prediction
-- **Age Correlation**: R² and MAE for age regression
+- **Age Correlation**: R and MAE for age regression
 
 **Example Results (10k samples):**
 ```
@@ -654,8 +661,12 @@ Right Eye Accuracy: 96.52%
 AGE
 ------------------------------
 Correlation (R): 0.8488
+R-squared: 0.2662
 Mean Absolute Error: 14.84 years
 ```
+
+<img src="evaluation/conditioning_results_10k/age_correlation_plot.png" alt="age_corr_plot" width="400"><br>
+
 
 **Evaluation-only mode** (using pre-trained judges):
 ```bash
@@ -676,16 +687,6 @@ Compute Fréchet Inception Distance (FID) to measure image quality and diversity
 python -m pytorch_fid \
     data/eval_10kSamples_256res/real_10kSamples_256res \
     data/eval_10kSamples_256res/synthetic_10kSamples_SiT_256res
-```
-
-**Using StyleGAN2-ADA's calc_metrics.py:**
-```bash
-cd stylegan2-ada-pytorch
-
-python calc_metrics.py \
-    --network <path/to/network.pkl> \
-    --metrics fid50k_full \
-    --data <path/to/real_dataset_zip_or_folder>
 ```
 
 **Compare SiT vs StyleGAN2-ADA:**
@@ -756,21 +757,21 @@ python scripts/evaluation/run_tstr.py \
 | SiT | 67.85% |
 | StyleGAN2-ADA | 46.33% |
 
----
+
 
 ## Citation
-
-If you use this code in your research, please cite:
+If you use this code or methodology in your research, please cite:
 
 ```bibtex
-@article{faf_flow_edit,
-  title={Conditional FAF Image Synthesis and Editing with Scalable Interpolant Transformers},
-  author={...},
-  year={2025}
+@misc{sit_faf_generate_edit,
+  author = {Amit John},
+  title = {SiT FAF Generation and Editing},
+  year = {2025},
+  url = {https://github.com/johnamit/sit-faf-generate-edit}
 }
 ```
 
-**SiT Paper:**
+**SiT (Scalable Interpolant Transformers):**
 ```bibtex
 @article{ma2024sit,
   title={SiT: Exploring Flow and Diffusion-based Generative Models with Scalable Interpolant Transformers},
@@ -780,7 +781,6 @@ If you use this code in your research, please cite:
 }
 ```
 
----
 
 ## License
 
