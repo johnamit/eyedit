@@ -760,7 +760,6 @@ python scripts/evaluation/run_tstr.py \
 
 
 ## Citation
-If you use this code or methodology in your research, please cite:
 
 ```bibtex
 @misc{sit_faf_generate_edit,
@@ -781,6 +780,31 @@ If you use this code or methodology in your research, please cite:
 }
 ```
 
+**SynthEye**
+```bibtex
+@article{veturi2023syntheye,
+  title={SynthEye: investigating the impact of synthetic data on artificial intelligence-assisted gene diagnosis of inherited retinal disease},
+  author={Veturi, Yoga Advaith and Woof, William and Lazebnik, Teddy and Moghul, Ismail and Woodward-Court, Peter and Wagner, Siegfried K and de Guimar{\~a}es, Thales Antonio Cabral and Varela, Malena Daich and Liefers, Bart and Patel, Praveen J and others},
+  journal={Ophthalmology Science},
+  volume={3},
+  number={2},
+  pages={100258},
+  year={2023},
+  publisher={Elsevier}
+}
+```
+
+**StyleGAN2-ADA**
+```bibtex
+@article{karras2020training,
+  title={Training generative adversarial networks with limited data},
+  author={Karras, Tero and Aittala, Miika and Hellsten, Janne and Laine, Samuli and Lehtinen, Jaakko and Aila, Timo},
+  journal={Advances in neural information processing systems},
+  volume={33},
+  pages={12104--12114},
+  year={2020}
+}
+```
 
 ## License
 
